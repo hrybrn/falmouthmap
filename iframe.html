@@ -1,0 +1,129 @@
+<!-- Map Widget -->
+<!-- 
+  The MIT License
+
+  Copyright © 2021 Harry Brown
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+  THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+-->
+<html>
+  <head>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+      integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+      crossorigin=""
+    />
+    <style>
+    #map {
+      /* this is the colour used for the background of the map */
+      background: #ffffff;
+    }
+  </style>
+  </head>
+  <body style="margin: 0">
+    <base target="_parent">
+    <div id="map" style="height: 100%; width: 100%"></div>
+
+    <script
+    src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+    integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+    crossorigin="">
+    </script>
+    <script>
+      //  configuration
+      //  circle link data
+      //    x - x coordinate for center of circle
+      //    y - y coordinate for center of circle
+      //    link - link to visit on click
+      var circleData = [
+        {
+          link: "http://google.com",
+          x: 1415,
+          y: 330,
+        },
+        {
+          link: "http://google.com",
+          x: 1415,
+          y: 330,
+        },
+        {
+          link: "http://google.com",
+          x: 1415,
+          y: 330,
+        },
+      ];
+      //  rectangle link data
+      //    x0 - bottom left x coordinate
+      //    y0 - bottom left y coordinate
+      //    x1 - top right x coordinate
+      //    y1 - top right y coordinate
+      //    link - link to visit on click
+      var rectangleData = [
+        {
+          x0: 0,
+          y0: 0,
+          x1: 100,
+          y1: 100,
+          link: "http://google.com"
+        }
+      ];
+      //  image
+      //    link - link to image
+      //    width - width of image
+      //    height - height of image
+      var image = {
+        link: 'brownie2.png',
+        width: 4000,
+        height: 2400
+      };
+      //  enable outlines for hot areas
+      var outlines = true
+      //  end of configuration
+
+
+      var map = L.map('map', {
+        crs: L.CRS.Simple,
+        minZoom: -5,
+        maxZoom: 1,
+        zoomSnap: 0
+      });
+
+      var opacity = outlines ? undefined : 0
+      var fillOpacity = opacity
+
+      var bounds = [[0, 0], [image.height, image.width]];
+      var image = L.imageOverlay(image.link, bounds).addTo(map);
+
+      rectangleData.forEach(data => {
+        var rectangle = L.rectangle([[data.y0, data.x0], [data.y1, data.x1]], {
+          color: "#ff7800",
+          weight: 1,
+          opacity,
+          fillOpacity
+        }).addTo(map);
+        rectangle.on('click', () => { window.parent.parent.window.location = data.link; });
+      });
+
+
+
+      map.fitBounds(bounds);
+      map.setMinZoom(map._zoom);
+
+      circleData.forEach(data => {
+        var circle = L.circle([data.y, data.x], {
+          radius: 120,
+          opacity,
+          fillOpacity
+        }).addTo(map);
+        circle.on('click', () => { window.parent.parent.window.location = data.link; });
+      });
+
+    </script>
+  </body>
+</html>
+<!-- End of map widget -->
