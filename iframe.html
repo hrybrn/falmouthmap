@@ -46,17 +46,17 @@
         {
           link: "http://google.com",
           x: 1415,
-          y: 330,
+          y: 1800,
         },
         {
           link: "http://google.com",
           x: 1415,
-          y: 330,
+          y: 1800,
         },
         {
           link: "http://google.com",
           x: 1415,
-          y: 330,
+          y: 1800,
         },
       ];
       //  rectangle link data
@@ -68,7 +68,7 @@
       var rectangleData = [
         {
           x0: 0,
-          y0: 0,
+          y0: 1000,
           x1: 100,
           y1: 100,
           link: "http://google.com"
@@ -78,8 +78,8 @@
       //    link - link to image
       //    width - width of image
       //    height - height of image
-      var image = {
-        link: 'brownie2.png',
+      var imageData = {
+        link: 'https://leanpub.com/site_images/leaflet-tips-and-tricks/draw-02.png',
         width: 4000,
         height: 2400
       };
@@ -98,11 +98,11 @@
       var opacity = outlines ? undefined : 0
       var fillOpacity = opacity
 
-      var bounds = [[0, 0], [image.height, image.width]];
-      var image = L.imageOverlay(image.link, bounds).addTo(map);
+      var bounds = [[0, 0], [imageData.height, imageData.width]];
+      var image = L.imageOverlay(imageData.link, bounds).addTo(map);
 
       rectangleData.forEach(data => {
-        var rectangle = L.rectangle([[data.y0, data.x0], [data.y1, data.x1]], {
+        var rectangle = L.rectangle([[imageData.height - data.y0, data.x0], [data.y1, data.x1]], {
           color: "#ff7800",
           weight: 1,
           opacity,
@@ -114,10 +114,11 @@
 
 
       map.fitBounds(bounds);
+      map.setMaxBounds(bounds);
       map.setMinZoom(map._zoom);
 
       circleData.forEach(data => {
-        var circle = L.circle([data.y, data.x], {
+        var circle = L.circle([imageData.height - data.y, data.x], {
           radius: 120,
           opacity,
           fillOpacity
